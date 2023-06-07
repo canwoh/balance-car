@@ -57,6 +57,23 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define AIN2_Pin GPIO_PIN_3
+#define AIN2_GPIO_Port GPIOA
+#define BIN2_Pin GPIO_PIN_4
+#define BIN2_GPIO_Port GPIOA
+#define Bluetooth_State_Pin GPIO_PIN_5
+#define Bluetooth_State_GPIO_Port GPIOA
+#define Trig_Pin GPIO_PIN_15
+#define Trig_GPIO_Port GPIOB
+#define Echo_Pin GPIO_PIN_8
+#define Echo_GPIO_Port GPIOA
+#define Echo_EXTI_IRQn EXTI9_5_IRQn
+#define infrared_Pin GPIO_PIN_5
+#define infrared_GPIO_Port GPIOB
+#define I2C_SCL_Pin GPIO_PIN_8
+#define I2C_SCL_GPIO_Port GPIOB
+#define I2C_SDA_Pin GPIO_PIN_9
+#define I2C_SDA_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
