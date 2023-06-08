@@ -1,4 +1,3 @@
-
 #include"common_inc.h"
 #include"SSD1306.h"
 
@@ -7,7 +6,7 @@ SSD1306 screen(OLED_ADDRESS);
 
 /*------------------------------------------C++ scope------------------------------------*/
 
-void Main(void)
+void Main()
 {
     
     HAL_Delay(1000);

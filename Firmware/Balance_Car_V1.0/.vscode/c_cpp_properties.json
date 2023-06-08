@@ -10,7 +10,11 @@
                 "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2",
                 "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM3",
                 "${workspaceFolder}/Drivers/CMSIS/Device/ST/STM32F1xx/Include",
-                "${workspaceFolder}/Drivers/CMSIS/Include"
+                "${workspaceFolder}/Drivers/CMSIS/Include",
+                "/BSP/OLED",
+                "/BSP/utils",
+                "UserApp",
+                "${workspaceFolder}/BSP/OLED"
             ],
             "configurationProvider": "ms-vscode.makefile-tools",
             "intelliSenseMode": "windows-gcc-arm",
