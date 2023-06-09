@@ -115,11 +115,8 @@ void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
-  for(;;)
-  {
-    Main();
-    vTaskDelete(defaultTaskHandle);
-  }
+  Main();
+  vTaskDelete(defaultTaskHandle);
   /* USER CODE END StartDefaultTask */
 }
 

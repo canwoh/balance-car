@@ -21,7 +21,7 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-
+#include"retarget.h"
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart3;
@@ -53,7 +53,7 @@ void MX_USART3_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART3_Init 2 */
-
+  RetargetInit(&huart3);
   /* USER CODE END USART3_Init 2 */
 
 }

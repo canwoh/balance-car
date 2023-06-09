@@ -75,7 +75,8 @@ Core/Src/usart.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c \
 Core/Src/dma.c \
 Core/Src/tim.c \
-BSP/utils/soft_iic.c
+BSP/utils/soft_iic.c \
+UserApp/utils/retarget.c 
 
 # ASM sources
 ASM_SOURCES =  \
@@ -130,7 +131,7 @@ AS_DEFS =
 # C defines
 C_DEFS =  \
 -DUSE_HAL_DRIVER \
--DSTM32F103xB
+-DSTM32F103xB \
 
 
 # AS includes
@@ -150,7 +151,8 @@ C_INCLUDES =  \
 -IBSP/OLED \
 -IBSP/utils \
 -IBSP \
--IUserApp 
+-IUserApp \
+-IUserApp/utils
 
 
 # compile gcc flags
@@ -158,7 +160,7 @@ ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffuncti
 
 CFLAGS += $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
 
-CPP_FLAGS += $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections -fno-rtti -fno-exceptions
+CPP_FLAGS += $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections -fno-rtti -fno-exceptions -std=c++11
 
 ifeq ($(DEBUG), 1)
 CFLAGS += -g -gdwarf-2

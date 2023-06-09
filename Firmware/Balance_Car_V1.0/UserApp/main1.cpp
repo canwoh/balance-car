@@ -8,11 +8,13 @@ SSD1306 screen(OLED_ADDRESS);
 
 void Main()
 {
-    
-    HAL_Delay(1000);
-    screen.OLED_Init();
-    screen.OLED_ShowChar(0,0,'1');
-    
+    for(;;)
+    {
+    //screen.OLED_Init();
+    //screen.OLED_ShowNum(0,0,1);
+        
+         
+    }
 }
 
 /*------------------------------------------C scope------------------------------------*/

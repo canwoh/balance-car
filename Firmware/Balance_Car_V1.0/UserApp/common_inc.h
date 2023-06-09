@@ -12,7 +12,6 @@ extern "C" {
     #include "task.h"
     #include "main.h"
     #include "cmsis_os.h"
-
     void Main(void);
 #ifdef __cplusplus
 }

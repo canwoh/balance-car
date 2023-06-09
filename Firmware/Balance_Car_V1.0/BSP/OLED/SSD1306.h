@@ -4,7 +4,9 @@
 #include"soft_iic.h"
 #include"stm32f1xx_hal.h"
 #include"OLED_font.h"
-#include<string>
+#include"string.h"
+#include"stdlib.h"
+#include"stdio.h"
 
 class SSD1306 
 {
@@ -19,7 +21,7 @@ class SSD1306
     void OLED_WriteCommand(uint8_t cmd);
     void OLED_ShowChar(uint8_t x,uint8_t y,char ch);
     void OLED_ShowNum(uint8_t x, uint8_t y, uint32_t num);
-    void OLED_ShowString(uint8_t x, uint8_t y,const std::string& str);
+    void OLED_ShowString(uint8_t x, uint8_t y,char* str);
     void OLED_ShowSignedNum(uint8_t x, uint8_t y, uint32_t num);
     private:
     void OLED_SetCursor(uint8_t x, uint8_t y);

@@ -129,13 +129,14 @@ void SSD1306::OLED_WriteData(uint8_t data)
   * @param  len > 16 字符串会被截取
   * @retval 无
 */
-void SSD1306::OLED_ShowString(uint8_t x, uint8_t y,const std::string& str)
+void SSD1306::OLED_ShowString(uint8_t x, uint8_t y,char *str)
 {
 	uint8_t i;
 	for(i = 0;str[i]!='\0'; i++)
 	{
 		OLED_ShowChar(x + i,y,str[i]);
 	}
+	
 }
 
 /*
@@ -153,18 +154,37 @@ uint32_t SSD1306::OLED_Pow(uint32_t x, uint32_t y)
 	return res;
 }
 
+/*
+  * @brief  OLED显示字符
+  * @param  y 以左上角为原点，向下方向的坐标，范围：0~3
+  * @param  x 以左上角为原点，向右方向的坐标，范围：0~15
+  * @param  num count < 16
+  * @retval 无
+*/
 void SSD1306::OLED_ShowNum(uint8_t x, uint8_t y, uint32_t num)
 {
-	auto str = std::to_string(num);
+	char str[15];
+	sprintf(str,"%ld",num);
 	OLED_ShowString(x,y,str);
+
 }
 
+/*
+  * @brief  OLED显示字符
+  * @param  y 以左上角为原点，向下方向的坐标，范围：0~3
+  * @param  x 以左上角为原点，向右方向的坐标，范围：0~15
+  * @param  num count < 16
+  * @retval 无
+*/
 void SSD1306::OLED_ShowSignedNum(uint8_t x,uint8_t y,uint32_t num)
 {
-	auto str = std::to_string(num);
-	if(num < 0)
+	char str[15];
+	if(num >= 0)
 	{
-		str = "-" + str;
+		sprintf(str,"+ %ld",num);
+	}else {
+		sprintf(str,"- %ld",num);
 	}
 	OLED_ShowString(x,y,str);
+
 }
