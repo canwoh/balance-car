@@ -22,6 +22,18 @@
 
 
 UART_HandleTypeDef *gHuart;
+extern osSemaphoreId debug_print;
+
+
+void safe_printf(const char *fmt, ...)
+{
+    if(osSemaphoreAcquire(debug_print,10)==pdFALSE)return;
+    va_list args; 
+    va_start(args,fmt); 
+    vprintf(fmt,args); 
+    va_end(args); 
+    osSemaphoreRelease(debug_print);     
+}
 
 void RetargetInit(UART_HandleTypeDef *huart)
 {

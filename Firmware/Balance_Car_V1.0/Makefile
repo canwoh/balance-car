@@ -76,7 +76,10 @@ Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c \
 Core/Src/dma.c \
 Core/Src/tim.c \
 BSP/utils/soft_iic.c \
-UserApp/utils/retarget.c 
+UserApp/utils/retarget.c \
+BSP/Ultrasonic/distance.c \
+BSP/utils/delay_us.c \
+BSP/utils/sys_time.c 
 
 # ASM sources
 ASM_SOURCES =  \
@@ -152,7 +155,8 @@ C_INCLUDES =  \
 -IBSP/utils \
 -IBSP \
 -IUserApp \
--IUserApp/utils
+-IUserApp/utils \
+-IBSP/Ultrasonic 
 
 
 # compile gcc flags
@@ -183,6 +187,7 @@ LDSCRIPT = STM32F103C8Tx_FLASH.ld
 LIBS = -lc -lm -lnosys 
 LIBDIR = 
 LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
+LDFLAGS += -lc -lrdimon -u _printf_float -u _scanf_float
 
 # default action: build all
 all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin

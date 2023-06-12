@@ -4,8 +4,11 @@
 #include "stm32f1xx_hal.h"
 #include "sys/stat.h"
 #include "stdio.h"
+#include "common_inc.h"
+#include "stdarg.h"
 
 void RetargetInit(UART_HandleTypeDef *huart);
+void safe_printf(const char *fmt, ...);
 
 int _isatty(int fd);
 

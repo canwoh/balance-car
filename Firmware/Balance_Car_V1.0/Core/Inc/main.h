@@ -32,6 +32,8 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "retarget.h"
+#include "delay_us.h"
+#include "sys_time.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

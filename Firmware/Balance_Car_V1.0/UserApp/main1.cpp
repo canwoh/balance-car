@@ -3,17 +3,20 @@
 
 
 SSD1306 screen(OLED_ADDRESS);
-
+extern osThreadId_t defaultTaskHandle;
 /*------------------------------------------C++ scope------------------------------------*/
 
 void Main()
 {
-    for(;;)
-    {
     //screen.OLED_Init();
     //screen.OLED_ShowNum(0,0,1);
+    for(;;)
+    {
+        safe_printf("hello world\r\n");
+        uint32_t remain_mem = uxTaskGetStackHighWaterMark(defaultTaskHandle);
+        safe_printf("%d\r\n",remain_mem);
+        osDelay(1000);
         
-         
     }
 }
 
