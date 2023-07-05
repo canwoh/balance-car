@@ -9,7 +9,7 @@ extern "C" {
 #include"main.h"
 #include"common_inc.h"
 
-void Measure_Distance(void *args);
+//void Measure_Distance(void *args);
 
 #ifdef __cplusplus
 }

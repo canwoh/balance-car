@@ -19,12 +19,20 @@
 //     va_end(args); 
 //     xSemaphoreGive(semDebug);   
 // }
+//uint32 uxTaskGetStackHighWaterMark(TaskHandle); //help for finding the suitable stack
 
 
 UART_HandleTypeDef *gHuart;
 extern osSemaphoreId debug_print;
 
-
+//!!!!!!!!!!!!!
+//Don't use this function in critical section!!! 
+//it is nessary to use the binary semaphore to support the function running 
+/*
+  osSemaphoreId debug_print;
+  osSemaphoreDef(debug_print);
+  debug_print = osSemaphoreNew(1,1,osSemaphore(debug_print));
+*/
 void safe_printf(const char *fmt, ...)
 {
     if(osSemaphoreAcquire(debug_print,10)==pdFALSE)return;

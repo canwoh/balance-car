@@ -14,7 +14,9 @@
                 "/BSP/OLED",
                 "/BSP/utils",
                 "UserApp",
-                "${workspaceFolder}/BSP/OLED"
+                "${workspaceFolder}/BSP/OLED",
+                "${workspaceFolder}/Drivers/STM32F1xx_HAL_Driver/Inc",
+                "${workspaceFolder}/Drivers/STM32F1xx_HAL_Driver/Inc"
             ],
             "configurationProvider": "ms-vscode.makefile-tools",
             "intelliSenseMode": "windows-gcc-arm",

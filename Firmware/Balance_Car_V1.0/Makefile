@@ -37,7 +37,9 @@ BUILD_DIR = build
 # C++ source
 CPP_SOURCES = \
 UserApp/main1.cpp \
-BSP/OLED/SSD1306.cpp 
+BSP/imu/mpu6050.cpp \
+BSP/imu/dmp/cpp_inv_mpu.cpp 
+
 
 # C sources
 C_SOURCES =  \
@@ -75,11 +77,16 @@ Core/Src/usart.c \
 Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c \
 Core/Src/dma.c \
 Core/Src/tim.c \
-BSP/utils/soft_iic.c \
 UserApp/utils/retarget.c \
 BSP/Ultrasonic/distance.c \
 BSP/utils/delay_us.c \
-BSP/utils/sys_time.c 
+BSP/utils/sys_time.c \
+BSP/imu/dmp/inv_mpu_dmp_motion_driver.c \
+BSP/imu/dmp/inv_mpu.c \
+BSP/imu/i2c_dev.c \
+BSP/soft_oled/OLED_Driver.c
+
+
 
 # ASM sources
 ASM_SOURCES =  \
@@ -134,7 +141,7 @@ AS_DEFS =
 # C defines
 C_DEFS =  \
 -DUSE_HAL_DRIVER \
--DSTM32F103xB \
+-DSTM32F103xB 
 
 
 # AS includes
@@ -156,7 +163,11 @@ C_INCLUDES =  \
 -IBSP \
 -IUserApp \
 -IUserApp/utils \
--IBSP/Ultrasonic 
+-IBSP/Ultrasonic \
+-IBSP/imu/dmp \
+-IBSP/imu \
+-IBSP/soft_oled
+
 
 
 # compile gcc flags

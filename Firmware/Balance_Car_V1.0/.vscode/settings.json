@@ -6,6 +6,11 @@
         "stm32f1xx_hal.h": "c",
         "main.h": "c",
         "delay_us.h": "c",
-        "distance.h": "c"
+        "distance.h": "c",
+        "i2c_dev.h": "c",
+        "type_traits": "cpp",
+        "oled_font.h": "c",
+        "font.h": "c"
     },
+    "C_Cpp.errorSquiggles": "disabled",
 }

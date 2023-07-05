@@ -26,7 +26,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include"common_inc.h"
-#include"distance.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,20 +46,24 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
 osSemaphoreId debug_print;
+osThreadId_t ultrasonicHandle;
+osThreadId_t IMUHandle;
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
-osThreadId_t ultrasonicHandle;
+
+
 
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .stack_size = 128 * 4,
+  .stack_size = 128 * 8,
   .priority = (osPriority_t) osPriorityNormal,
 };
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 void Ultrasonic_Task(void *argument);
+void IMU_Get_Measure_Task(void *argument);
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -98,18 +101,23 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the thread(s) */
   /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   
   const osThreadAttr_t ultrasonicThreadAtt = {
       .name = "ultrasonic",
-      .stack_size = 128*4 ,
+      .stack_size = 128*6 ,
       .priority = (osPriority_t)osPriorityNormal,
   };
+  const osThreadAttr_t IMUThreadAtt = {
+      .name = "imu",
+      .stack_size = 128*5,
+      .priority = (osPriority_t)osPriorityNormal,
+  };
+  //IMUHandle = osThreadNew(IMU_Get_Measure_Task,NULL,&IMUThreadAtt);
+  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
   ultrasonicHandle = osThreadNew(Ultrasonic_Task,NULL,&ultrasonicThreadAtt);
-  
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -129,7 +137,7 @@ void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
-  Main();
+  Main(argument);
   vTaskDelete(defaultTaskHandle);
   /* USER CODE END StartDefaultTask */
 }
@@ -139,7 +147,13 @@ void StartDefaultTask(void *argument)
 void Ultrasonic_Task(void *argument)
 {
   Measure_Distance(argument);
-  vTaskDelete(NULL);
+  vTaskDelete(ultrasonicHandle);
+}
+
+void IMU_Get_Measure_Task(void *argument)
+{
+   IMU_Get_Data(argument);
+   vTaskDelete(IMUHandle);
 }
 /* USER CODE END Application */
 
