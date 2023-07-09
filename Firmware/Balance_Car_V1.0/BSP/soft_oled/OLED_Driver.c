@@ -196,6 +196,7 @@ void OLED_ShowString(uint8_t Line, uint8_t Column, char *String)
 	uint8_t i;
 	for (i = 0; String[i] != '\0'; i++)
 	{
+		if((Column + i)>16)break;
 		OLED_ShowChar(Line, Column + i, String[i]);
 	}
 }

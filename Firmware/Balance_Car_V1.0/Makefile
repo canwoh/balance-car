@@ -84,7 +84,8 @@ BSP/utils/sys_time.c \
 BSP/imu/dmp/inv_mpu_dmp_motion_driver.c \
 BSP/imu/dmp/inv_mpu.c \
 BSP/imu/i2c_dev.c \
-BSP/soft_oled/OLED_Driver.c
+BSP/soft_oled/OLED_Driver.c \
+BSP/bluetooth/bluetooth.c
 
 
 
@@ -166,7 +167,8 @@ C_INCLUDES =  \
 -IBSP/Ultrasonic \
 -IBSP/imu/dmp \
 -IBSP/imu \
--IBSP/soft_oled
+-IBSP/soft_oled \
+-IBSP/bluetooth
 
 
 

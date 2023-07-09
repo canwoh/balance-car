@@ -22,6 +22,9 @@
 
 /* USER CODE BEGIN 0 */
 #include"retarget.h"
+extern uint8_t complete_record;
+extern osMessageQueueId_t uart_rx_dma_queue_id;
+
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart3;
@@ -41,7 +44,7 @@ void MX_USART3_UART_Init(void)
 
   /* USER CODE END USART3_Init 1 */
   huart3.Instance = USART3;
-  huart3.Init.BaudRate = 115200;
+  huart3.Init.BaudRate = 115200 ;
   huart3.Init.WordLength = UART_WORDLENGTH_8B;
   huart3.Init.StopBits = UART_STOPBITS_1;
   huart3.Init.Parity = UART_PARITY_NONE;
@@ -93,7 +96,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     hdma_usart3_rx.Init.MemInc = DMA_MINC_ENABLE;
     hdma_usart3_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
     hdma_usart3_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
-    hdma_usart3_rx.Init.Mode = DMA_NORMAL;
+    hdma_usart3_rx.Init.Mode = DMA_CIRCULAR;
     hdma_usart3_rx.Init.Priority = DMA_PRIORITY_LOW;
     if (HAL_DMA_Init(&hdma_usart3_rx) != HAL_OK)
     {
@@ -109,7 +112,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     hdma_usart3_tx.Init.MemInc = DMA_MINC_ENABLE;
     hdma_usart3_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
     hdma_usart3_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
-    hdma_usart3_tx.Init.Mode = DMA_NORMAL;
+    hdma_usart3_tx.Init.Mode = DMA_CIRCULAR;
     hdma_usart3_tx.Init.Priority = DMA_PRIORITY_LOW;
     if (HAL_DMA_Init(&hdma_usart3_tx) != HAL_OK)
     {
@@ -119,10 +122,13 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     __HAL_LINKDMA(uartHandle,hdmatx,hdma_usart3_tx);
 
     /* USART3 interrupt Init */
-    HAL_NVIC_SetPriority(USART3_IRQn, 6, 0);
+    HAL_NVIC_SetPriority(USART3_IRQn, 5, 0);
     HAL_NVIC_EnableIRQ(USART3_IRQn);
   /* USER CODE BEGIN USART3_MspInit 1 */
-
+    // hdma_usart3_rx.XferHalfCpltCallback = UART_DMA_XferHalfCpltCallback;
+    // hdma_usart3_rx.XferCpltCallback = UART_DMA_XferCpltCallback;
+    __HAL_UART_ENABLE_IT(&huart3,UART_IT_IDLE);
+    //__HAL_DMA_ENABLE_IT(&hdma_usart3_rx,DMA_IT_HT | DMA_IT_TC);
   /* USER CODE END USART3_MspInit 1 */
   }
 }
@@ -157,5 +163,16 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 }
 
 /* USER CODE BEGIN 1 */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  if(USART3 == huart->Instance){
+      void *d = (void*)1;
+      __HAL_UART_CLEAR_IDLEFLAG(huart);
+      osMessageQueuePut(uart_rx_dma_queue_id,&d,0,0);
+  }
+  //osMessageQueuePut(uart_rx_dma_queue_id,&d,0,0); 
+}
+
+
 
 /* USER CODE END 1 */

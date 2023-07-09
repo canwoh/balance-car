@@ -10,7 +10,10 @@
         "i2c_dev.h": "c",
         "type_traits": "cpp",
         "oled_font.h": "c",
-        "font.h": "c"
+        "font.h": "c",
+        "oled_driver.h": "c",
+        "cstring": "c",
+        "bluetooth.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled",
 }
