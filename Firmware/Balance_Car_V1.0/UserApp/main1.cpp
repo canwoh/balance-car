@@ -27,7 +27,6 @@ extern osThreadId_t ultrasonicHandle;
 //----------------------debug code------
 extern char debug_data[8];
 uint8_t complete_record;
-extern uint8_t test1;
 
 uint8_t motor_run = 0;
 // extern osThreadId_t defaultTaskHandle;
