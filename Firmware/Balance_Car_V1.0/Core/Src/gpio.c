@@ -49,6 +49,9 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
+  /*---------User code---------*/
+  
+  /*---------------------------*/
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, AIN2_Pin|BIN2_Pin, GPIO_PIN_RESET);
 
@@ -57,6 +60,7 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, infrared_Pin|I2C_SCL_Pin|I2C_SDA_Pin, GPIO_PIN_SET);
+  //HAL_GPIO_WritePin(GPIOB,GPIO_PIN_0|GPIO_PIN_1 ,GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PAPin PAPin */
   GPIO_InitStruct.Pin = AIN2_Pin|BIN2_Pin;

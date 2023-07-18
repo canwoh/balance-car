@@ -85,7 +85,8 @@ BSP/imu/dmp/inv_mpu_dmp_motion_driver.c \
 BSP/imu/dmp/inv_mpu.c \
 BSP/imu/i2c_dev.c \
 BSP/soft_oled/OLED_Driver.c \
-BSP/bluetooth/bluetooth.c
+BSP/bluetooth/bluetooth.c \
+BSP/motor/control.c
 
 
 
@@ -168,7 +169,8 @@ C_INCLUDES =  \
 -IBSP/imu/dmp \
 -IBSP/imu \
 -IBSP/soft_oled \
--IBSP/bluetooth
+-IBSP/bluetooth \
+-IBSP/motor
 
 
 

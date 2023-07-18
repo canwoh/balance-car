@@ -82,19 +82,37 @@
 
 // MPU ADDRESS
 #define MPU_ADDR					0X68
+
+#ifdef  __cplusplus
+extern "C" {
+#endif
+typedef struct imu_data_t
+{
+    float pitch;
+    float roll;
+    float yaw;
+
+    short acc_x;
+	short acc_y;
+	short acc_z;
+	
+	short gyro_x;
+	short gyro_y;
+	short gyro_z;
+}imu_data;
+
 #ifdef __cplusplus
+}
+#endif
+
+
+#ifdef __cplusplus
+
 class IMU_MPU6050 
 {
-    public:
-    
-    struct imu_data_t
-    {
-        float pitch;
-        float roll;
-        float yaw;
-    }imu_data_t = {1.0,0.0,0.0};
-    
-    
+    public: 
+    imu_data imu_data_t = {0,0,0,0,0,0,0,0,0};
+      
     public:
     uint8_t MPU_Init(void);
     uint8_t MPU_Write_Len(uint8_t addr,uint8_t reg,uint8_t len,uint8_t *buf);

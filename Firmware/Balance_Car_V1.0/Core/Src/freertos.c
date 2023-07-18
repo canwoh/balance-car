@@ -50,23 +50,25 @@ osMessageQueueId_t uart_rx_dma_queue_id;
 osThreadId_t ultrasonicHandle;
 osThreadId_t IMUHandle;
 osThreadId_t bluetoothHandle;
+osThreadId_t motionHandle;
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
 
 uint8_t test1 = 0;
 
-const osThreadAttr_t defaultTask_attributes = {
-  .name = "defaultTask",
-  .stack_size = 128 * 8,
-  .priority = (osPriority_t) osPriorityNormal,
-};
+// const osThreadAttr_t defaultTask_attributes = {
+//   .name = "defaultTask",
+//   .stack_size = 128 * 6,
+//   .priority = (osPriority_t) osPriorityNormal,
+// };
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 void Ultrasonic_Task(void *argument);
 void IMU_Get_Measure_Task(void *argument);
 void Bluetooth_Task(void *argument);
+void Motion_Task(void *argument);
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -109,27 +111,32 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   
-  const osThreadAttr_t ultrasonicThreadAtt = {
-      .name = "ultrasonic",
-      .stack_size = 128*6 ,
-      .priority = (osPriority_t)osPriorityNormal,
-  };
+  // const osThreadAttr_t ultrasonicThreadAtt = {
+  //     .name = "ultrasonic",
+  //     .stack_size = 128*6 ,
+  //     .priority = (osPriority_t)osPriorityNormal,
+  // };
   const osThreadAttr_t IMUThreadAtt = {
       .name = "imu",
       .stack_size = 128*5,
-      .priority = (osPriority_t)osPriorityNormal,
+      .priority = (osPriority_t)osPriorityAboveNormal,
   };
-  const osThreadAttr_t bluetoothThreadAtt = {
-      .name="bluetooth",
-      .stack_size=128*10,
+  // const osThreadAttr_t bluetoothThreadAtt = {
+  //     .name="bluetooth",
+  //     .stack_size=128*6,
+  //     .priority=(osPriority_t)osPriorityNormal,
+  // };
+  const osThreadAttr_t motionThreadAtt = {
+      .name = "motion",
+      .stack_size = 128*6,
       .priority=(osPriority_t)osPriorityNormal,
   };
   
-  //IMUHandle = osThreadNew(IMU_Get_Measure_Task,NULL,&IMUThreadAtt);
-  bluetoothHandle = osThreadNew(Bluetooth_Task,NULL,&bluetoothThreadAtt);
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
-  ultrasonicHandle = osThreadNew(Ultrasonic_Task,NULL,&ultrasonicThreadAtt);
-  
+  IMUHandle = osThreadNew(IMU_Get_Measure_Task,NULL,&IMUThreadAtt);
+  //bluetoothHandle = osThreadNew(Bluetooth_Task,NULL,&bluetoothThreadAtt);
+  //defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+  //ultrasonicHandle = osThreadNew(Ultrasonic_Task,NULL,&ultrasonicThreadAtt);
+  motionHandle = osThreadNew(Motion_Task,NULL,&motionThreadAtt);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -145,22 +152,22 @@ void MX_FREERTOS_Init(void) {
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
-{
-  /* USER CODE BEGIN StartDefaultTask */
-  /* Infinite loop */
-  Main(argument);
-  vTaskDelete(defaultTaskHandle);
-  /* USER CODE END StartDefaultTask */
-}
+// void StartDefaultTask(void *argument)
+// {
+//   /* USER CODE BEGIN StartDefaultTask */
+//   /* Infinite loop */
+//   Main(argument);
+//   vTaskDelete(defaultTaskHandle);
+//   /* USER CODE END StartDefaultTask */
+// }
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-void Ultrasonic_Task(void *argument)
-{
-  Measure_Distance(argument);
-  vTaskDelete(ultrasonicHandle);
-}
+// void Ultrasonic_Task(void *argument)
+// {
+//   Measure_Distance(argument);
+//   vTaskDelete(ultrasonicHandle);
+// }
 
 void IMU_Get_Measure_Task(void *argument)
 {
@@ -168,11 +175,17 @@ void IMU_Get_Measure_Task(void *argument)
    vTaskDelete(IMUHandle);
 }
 
-void Bluetooth_Task(void *argument)
+// void Bluetooth_Task(void *argument)
+// {
+//   //test1 = 1;
+//   UART_Recv_DMA_Thread(argument);
+//   vTaskDelete(bluetoothHandle);
+// }
+
+void Motion_Task(void *argument)
 {
-  test1 = 1;
-  UART_Recv_DMA_Thread(argument);
-  vTaskDelete(bluetoothHandle);
+   Motion_Controller_Thread(argument);
+   vTaskDelete(motionHandle);
 }
 /* USER CODE END Application */
 

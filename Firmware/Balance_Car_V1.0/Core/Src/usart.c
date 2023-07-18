@@ -21,9 +21,7 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-#include"retarget.h"
-extern uint8_t complete_record;
-extern osMessageQueueId_t uart_rx_dma_queue_id;
+
 
 /* USER CODE END 0 */
 
@@ -163,15 +161,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 }
 
 /* USER CODE BEGIN 1 */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-  if(USART3 == huart->Instance){
-      void *d = (void*)1;
-      __HAL_UART_CLEAR_IDLEFLAG(huart);
-      osMessageQueuePut(uart_rx_dma_queue_id,&d,0,0);
-  }
-  //osMessageQueuePut(uart_rx_dma_queue_id,&d,0,0); 
-}
+
 
 
 

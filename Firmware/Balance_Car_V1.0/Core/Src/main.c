@@ -27,6 +27,11 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include"OLED_Driver.h"
+extern uint8_t complete_record;
+extern osMessageQueueId_t uart_rx_dma_queue_id;
+extern uint32_t time_record[4];
+extern float dist;
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -158,6 +163,78 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
+/**
+  * @brief  PWM Pulse finished callback in non-blocking mode
+  * @param  htim TIM handle
+  * @retval None
+  */
+void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
+{
+    // if(htim->Instance == TIM3)
+    // {
+    //   if(htim->Channel == HAL_TIM_ACTIVE_CHANNEL_3)
+    //   {
+    //      HAL_GPIO_WritePin(GPIOA,GPIO_PIN_3,RESET);
+    //   }
+    //   if(htim->Channel == HAL_TIM_ACTIVE_CHANNEL_4)
+    //   {
+    //     HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,RESET);
+    //   }
+    // }
+    if(htim->Channel == HAL_TIM_ACTIVE_CHANNEL_3)
+    {
+        GPIOA->BRR = GPIO_PIN_3;
+    } else if(htim->Channel == HAL_TIM_ACTIVE_CHANNEL_4)
+    {
+        GPIOA->BRR = GPIO_PIN_4;
+    }
+}
+
+
+
+/*
+  *@brief UART Callback function
+*/
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  if(USART3 == huart->Instance){
+      void *d = (void*)1;
+      __HAL_UART_CLEAR_IDLEFLAG(huart);
+      osMessageQueuePut(uart_rx_dma_queue_id,&d,0,0);
+  }
+  //osMessageQueuePut(uart_rx_dma_queue_id,&d,0,0); 
+}
+
+/*
+  * @brief  Echo Callback
+  * @param  GPIO_Pin ：Echo_Pin
+  * @retval 无
+*/
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  __HAL_GPIO_EXTI_CLEAR_IT(GPIO_Pin);
+  if(GPIO_Pin == Echo_Pin)
+  {
+    //pull up trigger
+    if(HAL_GPIO_ReadPin(Echo_GPIO_Port,Echo_Pin)==GPIO_PIN_SET)
+    {
+        time_record[1] = get_sysTick_ms();
+        time_record[3] = get_sysTick_us_part();
+
+    }
+    //pull down trigger
+    else if(HAL_GPIO_ReadPin(Echo_GPIO_Port,Echo_Pin)==GPIO_PIN_RESET)
+    {
+      //us 
+        uint32_t total_time;
+        time_record[0] = get_sysTick_ms();
+        time_record[2] = get_sysTick_us_part();
+        total_time = (time_record[0] - time_record[1])*1000 + time_record[3] - time_record[2]; 
+        dist = (float)total_time * 0.17;
+    }
+  }
+}
+
 /* USER CODE END 4 */
 
 /**
@@ -171,13 +248,26 @@ void SystemClock_Config(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* USER CODE BEGIN Callback 0 */
-
+   if(TIM3->CCR3 != 0)
+        GPIOA->BSRR = GPIO_PIN_3;
+    if(TIM3->CCR4 != 0)
+        GPIOA->BSRR = GPIO_PIN_4;
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM1) {
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
-
+  // if (htim->Instance == TIM3)
+  // {
+  //    if((__HAL_TIM_GET_COMPARE(htim,TIM_CHANNEL_3))!=0)
+  //     {
+  //        HAL_GPIO_WritePin(GPIOA,GPIO_PIN_3,SET);
+  //     }
+  //     if((__HAL_TIM_GET_COMPARE(htim,TIM_CHANNEL_4))!=0)
+  //     {
+  //       HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,SET);
+  //     }
+  // }
   /* USER CODE END Callback 1 */
 }
 

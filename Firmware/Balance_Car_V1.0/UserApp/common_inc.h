@@ -17,6 +17,7 @@ extern "C" {
     void IMU_Get_Data(void *argument);
     void Measure_Distance(void *argument);
     void UART_Recv_DMA_Thread(void *argument);
+    void Motion_Controller_Thread(void *argument);
 #ifdef __cplusplus
 }
 //extern "C" void Main(void);

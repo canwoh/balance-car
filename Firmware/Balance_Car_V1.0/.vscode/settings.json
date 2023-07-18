@@ -13,7 +13,9 @@
         "font.h": "c",
         "oled_driver.h": "c",
         "cstring": "c",
-        "bluetooth.h": "c"
+        "bluetooth.h": "c",
+        "cstdint": "c",
+        "usart.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled",
 }

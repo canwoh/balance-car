@@ -29,6 +29,7 @@
 #include "cpp_inv_mpu.h"
 
 
+
 #define MPU6050							//??????????????????MPU6050
 #define MOTION_DRIVER_TARGET_MSP430		//????????????,????MSP430??????(?????STM32F1)
 
@@ -2857,14 +2858,14 @@ lp_int_restore:
 //////////////////////////////////////////////////////////////////////////////////
 //??????????
 //////////////////////////////////////////////////////////////////////////////////
-//???????????????¦Ä????????????????????????¦Ê????
+//???????????????ï¿½ï¿½????????????????????????ï¿½ï¿½????
 //ALIENTEK???STM32??????V3
 //MPU6050 DMP ????????
 //???????@ALIENTEK
 //???????:www.openedv.com
 //????????:2015/1/17
-//?·Ú??V1.0
-//??????§µ?????????
+//?ï¿½ï¿½??V1.0
+//??????ï¿½ï¿½?????????
 //Copyright(C) ?????????????????????? 2009-2019
 //All rights reserved
 //////////////////////////////////////////////////////////////////////////////////
@@ -2948,7 +2949,7 @@ unsigned short inv_row_2_scale(const signed char *row)
         b = 7;      // error
     return b;
 }
-//?????,¦Ä???.
+//?????,ï¿½ï¿½???.
 void mget_ms(unsigned long *time)
 {
 
@@ -2966,7 +2967,7 @@ uint8_t mpu_dmp_init(void)
         if(res)return 1;
         res=mpu_configure_fifo(INV_XYZ_GYRO|INV_XYZ_ACCEL);//????FIFO
         if(res)return 2;
-        res=mpu_set_sample_rate(DEFAULT_MPU_HZ);	//???¨°?????
+        res=mpu_set_sample_rate(DEFAULT_MPU_HZ);	//???ï¿½ï¿½?????
         if(res)return 3;
         res=dmp_load_motion_driver_firmware();		//????dmp???
         if(res)return 4;
@@ -2985,15 +2986,15 @@ uint8_t mpu_dmp_init(void)
     } else return 10;
     return 0;
 }
-//µÃµ½dmp´¦ÀíºóµÄÊý¾Ý(×¢Òâ,±¾º¯ÊýÐèÒª±È½Ï¶à¶ÑÕ»,¾Ö²¿±äÁ¿ÓÐµã¶à)
-//pitch:¸©Ñö½Ç ¾«¶È:0.1¡ã   ·¶Î§:-90.0¡ã <---> +90.0¡ã
-//roll:ºá¹ö½Ç  ¾«¶È:0.1¡ã   ·¶Î§:-180.0¡ã<---> +180.0¡ã
-//yaw:º½Ïò½Ç   ¾«¶È:0.1¡ã   ·¶Î§:-180.0¡ã<---> +180.0¡ã
-//·µ»ØÖµ:0,Õý³£
-//    ÆäËû,Ê§°Ü
-uint8_t mpu_dmp_get_data(float *pitch,float *roll,float *yaw)
+//ï¿½Ãµï¿½dmpï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(×¢ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½È½Ï¶ï¿½ï¿½Õ»,ï¿½Ö²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½)
+//pitch:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½:0.1ï¿½ï¿½   ï¿½ï¿½Î§:-90.0ï¿½ï¿½ <---> +90.0ï¿½ï¿½
+//roll:ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½:0.1ï¿½ï¿½   ï¿½ï¿½Î§:-180.0ï¿½ï¿½<---> +180.0ï¿½ï¿½
+//yaw:ï¿½ï¿½ï¿½ï¿½ï¿½   ï¿½ï¿½ï¿½ï¿½:0.1ï¿½ï¿½   ï¿½ï¿½Î§:-180.0ï¿½ï¿½<---> +180.0ï¿½ï¿½
+//ï¿½ï¿½ï¿½ï¿½Öµ:0,ï¿½ï¿½ï¿½ï¿½
+//    ï¿½ï¿½ï¿½ï¿½,Ê§ï¿½ï¿½
+uint8_t mpu_dmp_get_data(void *t_data)
 {
-    
+    imu_raw_data* data = (imu_raw_data*)t_data;
     float q0=1.0f,q1=0.0f,q2=0.0f,q3=0.0f;
     unsigned long sensor_timestamp;
     short gyro[3], accel[3], sensors;
@@ -3019,9 +3020,15 @@ uint8_t mpu_dmp_get_data(float *pitch,float *roll,float *yaw)
         q2 = quat[2] / q30;
         q3 = quat[3] / q30;
         //????????????/?????/?????
-        *pitch = asin(-2 * q1 * q3 + 2 * q0* q2)* 57.3;	// pitch
-        *roll  = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1)* 57.3;	// roll
-        *yaw   = atan2(2*(q1*q2 + q0*q3),q0*q0+q1*q1-q2*q2-q3*q3) * 57.3;	//yaw
+        data->pitch = asin(-2 * q1 * q3 + 2 * q0* q2)* 57.3;	// pitch
+        data->roll  = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1)* 57.3;	// roll
+        data->yaw   = atan2(2*(q1*q2 + q0*q3),q0*q0+q1*q1-q2*q2-q3*q3) * 57.3;	//yaw
+        data->acc_x = accel[0];
+        data->acc_y = accel[1];
+        data->acc_z = accel[2];
+        data->gyro_x = gyro[0];
+        data->gyro_y = gyro[1];
+        data->gyro_z = gyro[2];
     } else return 2;
     return 0;
 }

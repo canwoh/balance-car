@@ -22,6 +22,25 @@
 #define _INV_MPU_H_
 #include "stm32f1xx_hal.h"
 #include "main.h"
+//----------------User Code--------------------------------
+
+typedef struct imu_raw_data
+{
+    float pitch;
+    float roll;
+    float yaw;
+
+    short acc_x;
+	short acc_y;
+	short acc_z;
+	
+	short gyro_x;
+	short gyro_y;
+	short gyro_z;
+}imu_raw_data;
+
+//---------------------------------------------------------
+
 
 //��������ٶ�
 #define DEFAULT_MPU_HZ  (100)		//100Hz
@@ -134,7 +153,7 @@ unsigned short inv_row_2_scale(const signed char *row);
 unsigned short inv_orientation_matrix_to_scalar(const signed char *mtx);
 uint8_t run_self_test(void);
 uint8_t mpu_dmp_init(void);
-uint8_t mpu_dmp_get_data(float *pitch,float *roll,float *yaw);
+uint8_t mpu_dmp_get_data(void* t_data);
 
 #endif  /* #ifndef _INV_MPU_H_ */
 
