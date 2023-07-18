@@ -5,4 +5,4 @@
 #### OLED模块：
 导入PCB封装与实际不符，GND与VCC刚好相反
 
-![PCB中OLED](https://github.com/canwoh/balance-car/Docs/images/p1.png)
+![PCB中OLED](https://github.com/canwoh/balance-car/tree/master/Docs/images/p1.png)
